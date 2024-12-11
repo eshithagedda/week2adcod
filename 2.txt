@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Stack structure
+typedef struct Stack {
+    char arr[MAX];
+    int top;
+} Stack;
+
+// Function to initialize the stack
+void initStack(Stack *stack) {
+    stack->top = -1;
+}
+
+// Function to check if the stack is empty
+int isEmpty(Stack *stack) {
+    return stack->top == -1;
+}
+
+// Function to push an element onto the stack
+void push(Stack *stack, char value) {
+    if (stack->top == MAX - 1) {
+        printf("Stack overflow\n");
+        return;
+    }
+    stack->arr[++stack->top] = value;
+}
+
+// Function to pop an element from the stack
+char pop(Stack *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        return -1;
+    }
+    return stack->arr[stack->top--];
+}
+
+// Function to reverse the string using the stack
+void reverseString(char str[]) {
+    Stack stack;
+    initStack(&stack);
+
+    // Push all characters of the string onto the stack
+    for (int i = 0; i < strlen(str); i++) {
+        push(&stack, str[i]);
+    }
+
+    // Pop characters from the stack and overwrite the original string
+    for (int i = 0; i < strlen(str); i++) {
+        str[i] = pop(&stack);
+    }
+}
+
+int main() {
+    char str[MAX];
+
+    // Input the string
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    
+    // Remove the newline character if present
+    str[strcspn(str, "\n")] = '\0';
+
+    // Reverse the string using the stack
+    reverseString(str);
+
+    // Output the reversed string
+    printf("Reversed string: %s\n", str);
+
+    return 0;
+}
